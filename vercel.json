@@ -1,0 +1,19 @@
+{
+  "name": "biznouserapp",
+  "builds": [
+    {
+      "src": "src/app/api/**/*",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}

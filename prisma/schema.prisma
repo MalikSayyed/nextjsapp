@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:Malik12345@database-1.czmu68gk4ww3.us-east-1.rds.amazonaws.com:5432/NoUserAppDB?schema=public"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  userRole  String
+  blocked   String?
+  blogs     Blog[]   @relation("UserToBlog")
+  blogslive     Bloglive[]   @relation("UserToBloglive")
+  }
+
+  model Blog {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  slug        String
+  content     String?    @db.Text
+  image       String?    // Assuming the image URL will be stored as a string
+  published   String
+  delete_request String?
+  createdAt   DateTime  @default(now())
+  author      User      @relation("UserToBlog", fields: [author_id], references: [id])
+  author_id   Int
+  bloglive_id Int?
+}
+
+model Bloglive {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  slug        String
+  content     String?    @db.Text
+  image       String?    // Assuming the image URL will be stored as a string
+  published   String
+  delete_request String?
+  createdAt   DateTime  @default(now())
+  author      User      @relation("UserToBloglive", fields: [author_id], references: [id])
+  author_id   Int
+}
